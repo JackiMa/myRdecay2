@@ -1,0 +1,145 @@
+#
+# Macro file for the initialization phase of "radioActiv.cc"
+#
+# Sets some default verbose
+# and initializes the graphic.
+#
+/control/verbose 2
+/run/verbose 2
+#
+/run/initialize
+#
+# Use this open statement to create an OpenGL view:
+/vis/open OGL 600x600-0+0
+#
+# Use this open statement to create a .prim file suitable for
+# viewing in DAWN:
+#/vis/open DAWNFILE
+#
+# Use this open statement to create a .heprep file suitable for
+# viewing in HepRApp:
+#/vis/open HepRepFile
+#
+# Use this open statement to create a .wrl file suitable for
+# viewing in a VRML viewer:
+#/vis/open VRML2FILE
+#
+# Disable auto refresh and quieten vis messages whilst scene and
+# trajectories are established:
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+#
+# Draw geometry:
+/vis/drawVolume
+#
+# Specify view angle:
+#/vis/viewer/set/viewpointThetaPhi 90. 0.
+#
+# Specify zoom value:
+/vis/viewer/zoom 1.5
+#
+# Specify style (surface or wireframe):
+#/vis/viewer/set/style wireframe
+#
+# Draw coordinate axes:
+#/vis/scene/add/axes 0 0 0 1 m
+#
+# Draw smooth trajectories at end of event, showing trajectory points
+# as markers 2 pixels wide:
+/vis/scene/add/trajectories smooth
+#/vis/modeling/trajectories/create/drawByCharge
+#/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+#/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
+# (if too many tracks cause core dump => /tracking/storeTrajectory 0)
+#
+# Draw hits at end of event:
+#/vis/scene/add/hits
+#
+# To draw only gammas:
+#/vis/filtering/trajectories/create/particleFilter
+#/vis/filtering/trajectories/particleFilter-0/add gamma
+#
+# To invert the above, drawing all particles except gammas,
+# keep the above two lines but also add:
+#/vis/filtering/trajectories/particleFilter-0/invert true
+#
+# Many other options are available with /vis/modeling and /vis/filtering.
+# For example, to select colour by particle ID:
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set e- red
+/vis/modeling/trajectories/drawByParticleID-0/set e+ blue
+/vis/modeling/trajectories/drawByParticleID-0/set nu_e white
+/vis/modeling/trajectories/drawByParticleID-0/set anti_nu_e white
+/vis/modeling/trajectories/drawByParticleID-0/set geantino white
+/vis/modeling/trajectories/drawByParticleID-0/set gamma green
+/vis/modeling/trajectories/drawByParticleID-0/set alpha yellow
+/vis/modeling/trajectories/drawByParticleID-0/set GenericIon grey
+#
+# To superimpose all of the events from a given run:
+/vis/scene/endOfEventAction accumulate
+#
+# Re-establish auto refreshing and verbosity:
+/vis/viewer/set/autoRefresh true
+/vis/verbose warnings
+#
+# For file-based drivers, use this to create an empty detector view:
+#/vis/viewer/flush
+
+#
+# This file permits to customize, with commands,
+# the menu bar of the G4UIXm, G4UIQt, G4UIWin32 sessions.
+# It has no effect with G4UIterminal.
+#
+# File menu :
+/gui/addMenu file File
+/gui/addButton file Quit exit
+#
+# Run menu :
+/gui/addMenu run Run
+/gui/addButton run "beamOn 1" "/run/beamOn 1"
+/gui/addButton run "beamOn 100" "/run/beamOn 100"
+/gui/addButton run "beamOn 10000" "/run/beamOn 10000"
+/gui/addButton run "beamOn 1000000" "/run/beamOn 1000000"
+/gui/addButton run run1 "/control/execute run1.mac"
+#
+# gps menu :
+/gui/addMenu gps Gps
+/gui/addButton gps "10 keV"  "/gps/energy 10 keV"
+/gui/addButton gps "50 keV"  "/gps/energy 50 keV"
+/gui/addButton gps "1 MeV"  "/gps/energy 1 MeV"
+/gui/addButton gps "50 MeV"  "/gps/energy 50 MeV"
+/gui/addButton gps "1 GeV"   "/gps/energy 1 GeV"
+/gui/addButton gps "10 GeV"  "/gps/energy 10 GeV"
+/gui/addButton gps "e-"      "/gps/particle e-"
+/gui/addButton gps "gamma"      "/gps/particle gamma"
+/gui/addButton gps "pi0"     "/gps/particle pi0"
+/gui/addButton gps "pi+"     "/gps/particle pi+"
+/gui/addButton gps "neutron" "/gps/particle neutron"
+/gui/addButton gps "proton"  "/gps/particle proton"
+/gui/addButton gps "ang/type iso"  "/gps/ang/type iso"
+/gui/addButton gps "ang/type cos"  "/gps/ang/type cos"
+/gui/addButton gps "ang mintheta"  "/gps/ang/mintheta 30 deg"
+/gui/addButton gps "ang maxtheta"  "/gps/ang/maxtheta 90 deg"
+/gui/addButton gps "ang minphi"  "/gps/ang/minphi 30 deg"
+/gui/addButton gps "ang maxphi"  "/gps/ang/maxphi 180 deg"
+#
+# Vis menu :
+/gui/addMenu vis Vis
+/gui/addButton vis DAWNFILE  "/control/execute visTutor/exN03Vis0.mac"
+/gui/addButton vis OpenInventor "/control/execute visTutor/exN03Vis5.mac"
+/gui/addButton vis TimeSlicing "/control/execute visTutor/exN03Vis12.mac"
+/gui/addButton vis EmShower "/control/execute visTutor/exN03Vis13.mac"
+#
+# Viewer menu :
+/gui/addMenu viewer Viewer
+/gui/addButton viewer "Set style surface" "/vis/viewer/set/style surface"
+/gui/addButton viewer "Set style wireframe" "/vis/viewer/set/style wireframe"
+/gui/addButton viewer "Refresh viewer" "/vis/viewer/refresh"
+/gui/addButton viewer "Update viewer (interaction or end-of-file)" "/vis/viewer/update"
+/gui/addButton viewer "Flush viewer (= refresh + update)" "/vis/viewer/flush"
+/gui/addButton viewer "Update scene" "/vis/scene/notifyHandlers"
+#
+# To limit the output flow in the "dump" widget :
+/run/printProgress 100
+#
+
