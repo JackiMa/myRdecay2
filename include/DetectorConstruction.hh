@@ -54,6 +54,8 @@ private:
   G4double fCrystalWidth;
   G4double fCrystalLength;
   G4double fCrystalHeight;
+public:
+  G4String CrystalName;
 
   G4Material *GetMaterial(G4String MaterialName); // Get Material by name
 };

@@ -1,40 +1,14 @@
-/run/numberOfThreads 1
+# /run/numberOfThreads 4
 
 /run/initialize
 
 /particle/verbose 0
 /process/verbose 0
 /event/verbose 0
-/control/verbose 1
+/control/verbose 0
 /run/verbose 1
-/tracking/verbose 4
+/tracking/verbose 0
 
-#点源输入
-/gps/particle proton
-#/gps/particle e-
-/gps/pos/type Point
-/gps/pos/centre 0 0 -4*cm
+/control/execute ../Marco/ParticleDefine.mac
 
-#粒子方向，cosθ 在30°内抽样
-/gps/ang/type cos 
-/gps/ang/maxtheta 15 deg
-# /gps/direction 0 0 1
-#/gps/direction 100 0 120
-#能谱输入
-/gps/ene/type Arb
-/gps/hist/type arb
-# #能量/数量输入
- #              E(MeV) Rel.yield
-/gps/hist/point 0.09856 0.7167
-/gps/hist/point 0.1985 0.16876
-/gps/hist/point 0.29844 0.06781
-/gps/hist/point 0.39858 0.02794
-/gps/hist/point 0.49693 0.01123
-/gps/hist/point 0.59707 0.00463
-/gps/hist/point 0.69701 0.00182
-/gps/hist/point 0.79695 7.14898E-4
-/gps/hist/point 1 1.1292E-4
-/gps/hist/inter spline
-
-
-/run/beamOn 10000
+/run/beamOn 10000000

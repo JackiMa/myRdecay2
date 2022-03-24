@@ -48,10 +48,6 @@
 
 #include "G4PhysListFactory.hh"
 
-#include <iomanip>
-#include <fstream>
-
-#define OUTFILENAME "./output/data.csv"
 
 namespace
 {
@@ -67,15 +63,11 @@ namespace
 
 int main(int argc,char** argv)
 {    
-  std::string pathname = "./output/";
+  std::string pathname = "./test/";
   try{
         system(("mkdir " +  pathname).c_str()); // 创建文件夹
     }catch(const char* &e){
-  }
-  std::fstream fr;
-  fr.open(OUTFILENAME,std::ios::out|std::ios::trunc); // ios::trunc 如果文件存在，则先删除该文件
-  fr << "EventID\tParent\tTrack\tStep\tParticle\tEnergy\tTotalEnergy\tProcess"<<std::endl;
-  fr.close();
+    }
   
   
   // //先选随机数引擎，如果不选，默认是HepJamesRandom引擎。
@@ -101,7 +93,7 @@ int main(int argc,char** argv)
   G4String macro;
   G4String session;
 #ifdef G4MULTITHREADED
-  G4int nThreads = 1;
+  G4int nThreads = 8;
 #endif
 
   for (G4int i = 1; i < argc; i = i + 2)
@@ -157,6 +149,7 @@ int main(int argc,char** argv)
   // Physics list
   G4PhysListFactory factory;
   G4VModularPhysicsList* physicsList = nullptr;
+  // physicsList = factory.GetReferencePhysList("FTFP_BERT_LIV");
   physicsList = factory.GetReferencePhysList("FTFP_BERT");
   // physicsList = factory.GetReferencePhysList("QBBC");
   physicsList->SetVerboseLevel(0);
@@ -164,6 +157,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(physicsList);
 
   // runManager->SetUserInitialization(new PhysicsList);
+
   runManager->SetUserInitialization(new ActionInitialization);
 
   //initialize G4 kernel
@@ -176,12 +170,23 @@ int main(int argc,char** argv)
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
 
+  if ( macro.size() ) {
+    // batch mode
+    G4String command = "/control/execute ";
+    UImanager->ApplyCommand(command+macro);
+  }
+  else  {  
+    // interactive mode : define UI session
+    UImanager->ApplyCommand("/control/execute init_vis.mac");
+    if (ui->IsGUI()) {
+      UImanager->ApplyCommand("/control/execute gui.mac");
+    }
+    ui->SessionStart();
+    delete ui;
+  }
 
-  // Job termination
-  // Free the store: user actions, physics_list and detector_description are
-  // owned and deleted by the run manager, so they should not be deleted
-  // in the main() program !
 
+  //job termination
   delete visManager;
   delete runManager;
 }

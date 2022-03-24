@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <fstream>
 
+#include "G4AnalysisManager.hh"
 
 #define OUTFILENAME "./output/data.csv"
 
@@ -23,7 +24,41 @@ std::map<G4String, G4int> RunAction::nuclideTable;
 
 RunAction::RunAction()
 :G4UserRunAction()
-{}
+{
+    // Create analysis manager
+  // The choice of the output format is done via the specified
+  // file extension.
+  auto analysisManager = G4AnalysisManager::Instance();
+
+  // Create directories
+  //analysisManager->SetHistoDirectoryName("histograms");
+  //analysisManager->SetNtupleDirectoryName("ntuple");
+  analysisManager->SetVerboseLevel(1);
+  analysisManager->SetNtupleMerging(true);
+    // Note: merging ntuples is available only with Root output
+
+  // Book histograms, ntuple
+  //
+  // Creating histograms
+
+  analysisManager->CreateH1("E_radiation","Time = 1ns", 1024, 0., 10*MeV); // 占位
+  analysisManager->CreateH1("E_radiation","Time = 1us", 1024, 0., 10*MeV);
+  analysisManager->CreateH1("E_radiation","Time = 1ms", 1024, 0., 10*MeV);
+  analysisManager->CreateH1("E_radiation","Time = 1s", 1024, 0., 10*MeV);
+  analysisManager->CreateH1("E_radiation","Time = 1ks", 1024, 0., 10*MeV);
+  analysisManager->CreateH1("E_radiation","Time = 1ks+", 1024, 0., 10*MeV);
+  
+  
+
+
+  // // Creating ntuple
+  // //
+  // analysisManager->CreateNtuple("Radiation", "Edep");
+  // analysisManager->CreateNtupleDColumn("TrackID");
+  // analysisManager->CreateNtupleDColumn("GlobalTime");
+  // analysisManager->CreateNtupleDColumn("E_radiation");
+  // analysisManager->FinishNtuple();
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -33,6 +68,9 @@ RunAction::~RunAction()
 
 void RunAction::BeginOfRunAction(const G4Run* aRun)
 { 
+
+
+
 if(IsMaster()){
   G4cout << " ### Run "<< aRun->GetRunID() << " start." << G4endl;
   std::ofstream fr;
@@ -46,8 +84,24 @@ if(isCleanAfterRun){
   this->nuclideTable.erase(this->nuclideTable.begin(),this->nuclideTable.end()); 
 }
 
+
+
 }
 
+  // 尝试使用g4root来画图
+  // Get analysis manager
+  auto analysisManager = G4AnalysisManager::Instance();
+
+  // Open an output file
+  //
+  const DetectorConstruction *detectorConstruction = static_cast<const DetectorConstruction *>(G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+  G4String CrystalName = detectorConstruction->CrystalName;
+  G4String fileName = CrystalName + ".root";
+  // Other supported output types:
+  // G4String fileName = "B4.csv";
+  analysisManager->OpenFile(fileName);
+  G4cout << "Using " << analysisManager->GetType() << G4endl;
+  // g4root 👆
   
 
 }
@@ -56,6 +110,7 @@ if(isCleanAfterRun){
 
 void RunAction::EndOfRunAction(const G4Run* aRun)
 {
+
   if(IsMaster()){
     G4cout << "\n*******************************************"<< G4endl;
     G4cout << "\t\tNumber of event = "<< aRun->GetNumberOfEvent() << G4endl;
@@ -71,6 +126,15 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     G4cout << G4endl;
     G4cout << "cout完毕!\n" ;
   }
+
+        // g4root
+  auto analysisManager = G4AnalysisManager::Instance();
+    // save histograms & ntuple
+  analysisManager->Write();
+  analysisManager->CloseFile();
+  // --------------------------
+
 }
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

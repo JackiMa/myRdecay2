@@ -39,6 +39,8 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 
+#define CRYSTALNAME "GAGG"
+
 // 哈希运算
 typedef std::uint64_t hash_t;
 constexpr hash_t prime = 0x100000001B3ull; // 哈希运算用到的常数
@@ -78,6 +80,7 @@ DetectorConstruction::DetectorConstruction()
   fCrystalWidth = 2*cm;
   fCrystalLength = 6*cm;
   fCrystalHeight = 4*cm;
+  CrystalName = CRYSTALNAME;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -99,7 +102,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
   G4VPhysicalVolume *physiWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, checkOverlaps);
 
   // Crystal
-  G4String CrystalName = "GAGG";
+  // CrystalName = "GAGG";
   G4Material *CrystalMaterial = GetMaterial(CrystalName);
   G4Box *solidCrystal = new G4Box((CrystalName+"Solid").c_str(), fCrystalLength / 2, fCrystalHeight / 2, fCrystalWidth / 2);
   G4LogicalVolume *logicCrystal = new G4LogicalVolume(solidCrystal, CrystalMaterial, (CrystalName+"Logic").c_str());
