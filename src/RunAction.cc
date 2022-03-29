@@ -40,15 +40,17 @@ RunAction::RunAction()
   // Book histograms, ntuple
   //
   // Creating histograms
+    analysisManager->SetH1XAxisTitle(2,"SetH1XAxisTitle");
 
-  analysisManager->CreateH1("E_radiation","Time = 1ns", 1024, 0., 10*MeV); // 占位
-  analysisManager->CreateH1("E_radiation","Time = 1us", 1024, 0., 10*MeV);
-  analysisManager->CreateH1("E_radiation","Time = 1ms", 1024, 0., 10*MeV);
-  analysisManager->CreateH1("E_radiation","Time = 1s", 1024, 0., 10*MeV);
-  analysisManager->CreateH1("E_radiation","Time = 1ks", 1024, 0., 10*MeV);
-  analysisManager->CreateH1("E_radiation","Time = 1ks+", 1024, 0., 10*MeV);
+  analysisManager->CreateH1("E_radiation","Time = 1ns", 1024, 0., 3*MeV,"MeV");
+  // analysisManager->CreateH1("E_radiation","Time = 1ns", 1024, 0., 3*MeV); // 占位
+  analysisManager->CreateH1("E_radiation","Time = 1s", 1024, 0, 1*MeV,"MeV");
+  analysisManager->CreateH1("E_radiation","Time = 10s", 1024, 0., 3*MeV,"MeV");
+  analysisManager->CreateH1("E_radiation","Time = 100s", 1024, 0., 3*MeV,"MeV");
+  analysisManager->CreateH1("E_radiation","Time = 1ks", 1024, 0., 3*MeV,"MeV");
+  analysisManager->CreateH1("E_radiation","Time = 1ks+", 1024, 0., 3*MeV,"MeV");
   
-  
+
 
 
   // // Creating ntuple
@@ -130,6 +132,20 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
         // g4root
   auto analysisManager = G4AnalysisManager::Instance();
     // save histograms & ntuple
+
+
+  G4cout << "------------------------------------" << "\n";
+  G4cout << "------------------------------------" << "\n";
+  G4cout << "------------------------------------" << "\n";
+  G4cout << "------------------------------------" << "\n";
+  G4cout << analysisManager->GetH1Nbins(0) << "\n";
+  G4cout << analysisManager->WriteH1(1,"testGAGG.csv") << "\n";
+  G4cout << "------------------------------------" << "\n";
+  G4cout << "------------------------------------" << "\n";
+  G4cout << "------------------------------------" << "\n";
+  G4cout << "------------------------------------" << "\n";
+
+
   analysisManager->Write();
   analysisManager->CloseFile();
   // --------------------------

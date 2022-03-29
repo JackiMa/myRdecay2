@@ -150,7 +150,8 @@ int main(int argc,char** argv)
   G4PhysListFactory factory;
   G4VModularPhysicsList* physicsList = nullptr;
   // physicsList = factory.GetReferencePhysList("FTFP_BERT_LIV");
-  physicsList = factory.GetReferencePhysList("FTFP_BERT");
+  // physicsList = factory.GetReferencePhysList("Shielding");
+  physicsList = factory.GetReferencePhysList("FTFP_BERT_HP");
   // physicsList = factory.GetReferencePhysList("QBBC");
   physicsList->SetVerboseLevel(0);
   physicsList->SetDefaultCutValue(0.003*CLHEP::mm); // 最小截至径迹长度
