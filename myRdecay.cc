@@ -186,9 +186,21 @@ int main(int argc,char** argv)
     delete ui;
   }
 
+  const DetectorConstruction *detectorConstruction = static_cast<const DetectorConstruction *>(G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+  G4String CrystalName = detectorConstruction->CrystalName;
 
   //job termination
   delete visManager;
   delete runManager;
+
+  
+  G4cout << " Master EndOfRunAction: \n";
+  std::stringstream cmdStream;  /* 或者使用 ostringstream */
+  // 造字符串流
+  cmdStream << "root -x \"../Marco/draw_root.C(\\\"" << CrystalName <<  "\\\")\"";
+  // 获取最终需要的字符串
+  G4String cmd = cmdStream.str();
+  G4cout << " the cmd = :: " << cmd << "\n";
+  system(cmd);
 }
 

@@ -31,7 +31,8 @@
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
 #include "EventAction.hh"
-#include "SteppingAction.hh"
+#include "TrackingAction.hh"
+// #include "SteppingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -65,8 +66,10 @@ void ActionInitialization::Build() const
   EventAction* event = new EventAction();
   SetUserAction(event);
   
-  SteppingAction* steppingAction = new SteppingAction(event,runAction);
-  SetUserAction(steppingAction);
+  // SteppingAction* steppingAction = new SteppingAction(event,runAction);
+  // SetUserAction(steppingAction);
+  TrackingAction* trackingAction = new TrackingAction(event);
+  SetUserAction(trackingAction);
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

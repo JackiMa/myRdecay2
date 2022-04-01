@@ -35,7 +35,7 @@
 
 #include "G4UserRunAction.hh"
 #include "globals.hh"
-
+#include "Run.hh"
 #include <map>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -46,10 +46,14 @@ class RunAction : public G4UserRunAction
     RunAction();
    ~RunAction();
 
+    virtual G4Run* GenerateRun();
     virtual void BeginOfRunAction(const G4Run*);
     virtual void   EndOfRunAction(const G4Run*);
 
-  static std::map<G4String, G4int> nuclideTable;
+  // static std::map<G4String, G4int> nuclideTable;
+  private:
+  G4String CrystalName; // 晶体名字
+  Run*  fRun;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

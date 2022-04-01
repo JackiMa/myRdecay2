@@ -121,6 +121,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
 G4Material *DetectorConstruction::GetMaterial(G4String MaterialName) // find element
 {
   G4int natoms, ncomponents;
+  G4double fractionmass; // 质量百分比
   G4Material *Mat;
   G4String mat_name;
   G4NistManager *nist = G4NistManager::Instance();
@@ -180,6 +181,61 @@ G4Material *DetectorConstruction::GetMaterial(G4String MaterialName) // find ele
       Mat = new G4Material(mat_name = "CsI", density_CsI, ncomponents = 2);
       Mat->AddElement(eleCs, natoms = 1);
       Mat->AddElement(eleI, natoms = 1);
+      break;
+    }
+
+  case "Stainless304"_hash:
+    if ("Stainless304" == MaterialName)
+    {
+      G4Element *eleFe = nist->FindOrBuildElement("Fe");
+      G4Element *eleC = nist->FindOrBuildElement("C");
+      G4Element *eleMn = nist->FindOrBuildElement("Mn");
+      G4Element *eleSi = nist->FindOrBuildElement("Si");
+      G4Element *eleP = nist->FindOrBuildElement("P");
+      G4Element *eleS = nist->FindOrBuildElement("S");
+      G4Element *eleNi = nist->FindOrBuildElement("Ni");
+      G4Element *eleCr = nist->FindOrBuildElement("Cr");
+      G4Element *eleMo = nist->FindOrBuildElement("Mo");
+      G4Element *eleCu = nist->FindOrBuildElement("Cu");
+      G4double density_Stainless304 = 7.93 * g / cm3;
+      Mat = new G4Material(mat_name = "Stainless304", density_Stainless304, ncomponents = 10);
+      Mat->AddElement(eleC,fractionmass=0.025/100);
+      Mat->AddElement(eleMn,fractionmass=1.78/100);
+      Mat->AddElement(eleSi,fractionmass=0.3/100);
+      Mat->AddElement(eleP,fractionmass=0.027/100);
+      Mat->AddElement(eleS,fractionmass=0.02/100);
+      Mat->AddElement(eleNi,fractionmass=8.1/100);
+      Mat->AddElement(eleCr,fractionmass=18.2/100);
+      Mat->AddElement(eleMo,fractionmass=0.13/100);
+      Mat->AddElement(eleCu,fractionmass=1.96/100);
+      Mat->AddElement(eleFe,fractionmass=(100-0.025-1.78-0.3-0.027-0.02-8.1-18.2-0.13-1.96)/100);
+      
+      break;
+    }
+
+case "Ti75"_hash:
+    if ("Ti75" == MaterialName)
+    {
+      G4Element *eleTi = nist->FindOrBuildElement("Ti");
+      G4Element *eleAl = nist->FindOrBuildElement("Al");
+      G4Element *eleMo = nist->FindOrBuildElement("Mo");
+      G4Element *eleZr = nist->FindOrBuildElement("Zr");
+      G4Element *eleFe = nist->FindOrBuildElement("Fe");
+      G4Element *eleC = nist->FindOrBuildElement("C");
+      G4Element *eleO = nist->FindOrBuildElement("O");
+      G4Element *eleN = nist->FindOrBuildElement("N");
+      G4Element *eleH = nist->FindOrBuildElement("H");
+      G4double density_Ti75 = 4.53 * g / cm3;
+      Mat = new G4Material(mat_name = "Ti75", density_Ti75, ncomponents = 9);
+      Mat->AddElement(eleAl,fractionmass=3/100);
+      Mat->AddElement(eleMo,fractionmass=2/100);
+      Mat->AddElement(eleZr,fractionmass=2/100);
+      Mat->AddElement(eleFe,fractionmass=0.3/100);
+      Mat->AddElement(eleC,fractionmass=0.1/100);
+      Mat->AddElement(eleO,fractionmass=0.15/100);
+      Mat->AddElement(eleN,fractionmass=0.05/100);
+      Mat->AddElement(eleH,fractionmass=0.015/100);
+      Mat->AddElement(eleTi,fractionmass=(100-3-2-2-0.3-0.1-0.15-0.05-0.015)/100);
       break;
     }
 
