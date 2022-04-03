@@ -11,4 +11,4 @@
 
 /control/execute ../Marco/ParticleDefine.mac
 
-/run/beamOn 10000
+/run/beamOn 1000000

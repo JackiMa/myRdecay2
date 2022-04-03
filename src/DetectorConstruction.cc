@@ -39,7 +39,9 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 
-#define CRYSTALNAME "GAGG"
+#define CRYSTALNAME "Stainless304"
+
+// CrystalName can be: GAGG LYSO CsI BGO Stainless304 Ti75
 
 // 哈希运算
 typedef std::uint64_t hash_t;

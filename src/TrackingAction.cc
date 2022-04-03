@@ -36,7 +36,7 @@ void TrackingAction::PreUserTrackingAction(const G4Track* track)
          
   G4ParticleDefinition* particle = track->GetDefinition();
   G4String name   = particle->GetParticleName();
-  fCharge = particle->GetPDGCharge();
+  fCharge = particle->GetPDGCharge(); 
   fMass   = particle->GetPDGMass();  
     
   G4double Ekin = track->GetKineticEnergy();
