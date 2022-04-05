@@ -193,14 +193,25 @@ int main(int argc,char** argv)
   delete visManager;
   delete runManager;
 
-  
   G4cout << " Master EndOfRunAction: \n";
-  std::stringstream cmdStream;  /* 或者使用 ostringstream */
-  // 造字符串流
-  cmdStream << "root -x \"../Marco/draw_root.C(\\\"" << CrystalName <<  "\\\")\"";
-  // 获取最终需要的字符串
-  G4String cmd = cmdStream.str();
-  G4cout << " the cmd = :: " << cmd << "\n";
+
+  std::stringstream cmdStream; // 创建cmd流，用于输入命令行命令
+  G4String cmd;
+
+  // 调用python，来对输出数据进行排序
+  cmdStream << "python3 ../Marco/sortOutGammaList.py " << CrystalName;
+  cmd = cmdStream.str();
+  G4cout << " G4cout do:\t" << cmd << "\n";
   system(cmd);
+  
+  
+  // 调用ROOT来进行绘图
+  cmdStream.str("");
+  cmdStream << "root -x \"../Marco/draw_root.C(\\\"" << CrystalName <<  "\\\")\"";
+  cmd = cmdStream.str();
+  G4cout << " G4cout do:\t" << cmd << "\n";
+  system(cmd);
+
+
 }
 
