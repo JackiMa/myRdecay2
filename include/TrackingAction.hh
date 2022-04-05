@@ -4,6 +4,7 @@
 #include "G4UserTrackingAction.hh"
 #include "globals.hh"
 
+class RunAction;
 class EventAction;
 class TrackingMessenger;
 
@@ -12,14 +13,15 @@ class TrackingMessenger;
 class TrackingAction : public G4UserTrackingAction {
 
   public:  
-    TrackingAction(EventAction*);
+    TrackingAction(EventAction *event, RunAction *run);
    ~TrackingAction();
    
     virtual void  PreUserTrackingAction(const G4Track*);
     virtual void PostUserTrackingAction(const G4Track*);
 
   private:
-    EventAction*        fEvent;
+    EventAction*  fEvent;
+    RunAction*  fRun;
 
     G4double fCharge, fMass;        
 

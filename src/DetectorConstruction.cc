@@ -39,7 +39,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 
-#define CRYSTALNAME "Stainless304"
+#define CRYSTALNAME "BGO"
 
 // CrystalName can be: GAGG LYSO CsI BGO Stainless304 Ti75
 
@@ -79,9 +79,9 @@ DetectorConstruction::DetectorConstruction()
     : G4VUserDetectorConstruction()
 {
   fWorldSize = 12 * cm;
-  fCrystalWidth = 2*cm;
-  fCrystalLength = 6*cm;
-  fCrystalHeight = 4*cm;
+  fCrystalWidth = 1*cm;
+  fCrystalLength = 5.9*cm;
+  fCrystalHeight = 2.6*cm;
   CrystalName = CRYSTALNAME;
 }
 

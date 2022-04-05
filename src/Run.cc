@@ -22,6 +22,21 @@ Run::~Run()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void Run::CoinIonCount(G4double globalTime, G4double depInCrystal){
+
+globalTime = (G4long) globalTime / (0.1*us); // 设可以分辨的最小时间为0.1us，那么按此来合并.
+                                             // 通过数制转换来强行实现数据的合并
+
+  // 合并同一时间沉积的能量
+  std::map<G4double, G4double>::iterator it = coinIonDataMap.find(globalTime);
+  if ( it == coinIonDataMap.end()) {
+    coinIonDataMap[globalTime] = depInCrystal;
+  }
+  else{
+    coinIonDataMap[globalTime] += depInCrystal;
+  }
+}
+
 void Run::ParticleCount(G4String name, G4double Ekin, G4double meanLife)
 {
   std::map<G4String, ParticleData>::iterator it = fParticleDataMap.find(name);
@@ -52,7 +67,7 @@ void Run::Merge(const G4Run* run)
   // fParticle = localRun->fParticle;
   // fEkin     = localRun->fEkin;
 
-  //maps
+  // fParticleDataMap
   std::map<G4String,ParticleData>::const_iterator itn;
   for (itn = localRun->fParticleDataMap.begin(); 
        itn != localRun->fParticleDataMap.end(); ++itn) {
@@ -79,7 +94,21 @@ void Run::Merge(const G4Run* run)
     }   
   }
 
-  
+  // coinIonDataMap
+  std::map<G4double, G4double>::const_iterator itn2;
+  for (itn2 = localRun->coinIonDataMap.begin(); 
+       itn2 != localRun->coinIonDataMap.end(); ++itn2) {
+    
+    G4double globalTime = itn2->first;
+    const G4double localData = itn2->second;   
+    if ( coinIonDataMap.find(globalTime) == coinIonDataMap.end()) {
+      coinIonDataMap[globalTime] = localData;
+    }
+    else {
+        coinIonDataMap[globalTime] += localData;
+    }   
+  }
+
   G4Run::Merge(run); 
 } 
     
@@ -156,6 +185,21 @@ void Run::EndOfRun()
  }
  fr.close();
  frSimple.close();
+
+
+  std::fstream coinFileIon;                              // 输出在晶体内沉积能量的大小和时间
+  coinFileIon.open("CoinCrystalDep_"+CrystalName+".csv", std::ios::app); // ios::app 在文件尾追加输入
+
+   std::map<G4double, G4double>::const_iterator it2;               
+ for (it2 = coinIonDataMap.begin(); it2 != coinIonDataMap.end(); it2++) { 
+    G4double globalTime     = it2->first;
+    G4double edepInCrystal = it2->second;
+
+  coinFileIon << std::setprecision(15) << globalTime *us / s << "," << edepInCrystal/keV; // 将单位换算到s和keV
+  coinFileIon << "\n";
+    
+ }
+  coinFileIon.close();
  
 }
 

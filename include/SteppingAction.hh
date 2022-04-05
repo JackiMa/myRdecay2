@@ -7,6 +7,7 @@
 
 class EventAction;
 class RunAction;
+class Run;
 
 class G4LogicalVolume;
 
@@ -16,7 +17,7 @@ class G4LogicalVolume;
 class SteppingAction : public G4UserSteppingAction
 {
   public:
-    SteppingAction(EventAction* event,RunAction*runAction);
+    SteppingAction(EventAction *event, RunAction *runaction);
     virtual ~SteppingAction();
 
     // method from the base class
@@ -24,7 +25,7 @@ class SteppingAction : public G4UserSteppingAction
 
   private:
     EventAction*  fEvent;
-    RunAction*  fRun;
+    RunAction*  fRunAction;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

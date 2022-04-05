@@ -18,6 +18,7 @@ class Run : public G4Run
 
   public:
     void ParticleCount(G4String, G4double, G4double);
+    void CoinIonCount(G4double, G4double); // 统计沉积能量的粒子
 
     // void SetPrimary(G4ParticleDefinition* particle, G4double energy);
     void EndOfRun(); 
@@ -44,6 +45,7 @@ class Run : public G4Run
     // G4double  fEkin;
              
     std::map<G4String,ParticleData>  fParticleDataMap;    
+       
 
 private:    
   struct ActivityData {
@@ -57,6 +59,9 @@ private:
   };
   
   std::map<G4String,ActivityData>  fActivityMap;
+
+  private:
+  std::map<G4double,G4double>  coinIonDataMap; 
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

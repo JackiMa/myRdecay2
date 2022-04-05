@@ -2,6 +2,7 @@
 
 #include "Run.hh"
 #include "EventAction.hh"
+#include "RunAction.hh"
 
 #include "G4Track.hh"
 #include "G4ParticleTypes.hh"
@@ -15,11 +16,10 @@
 #include "G4AnalysisManager.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-TrackingAction::TrackingAction(EventAction* fEventAction)
+TrackingAction::TrackingAction(EventAction *event, RunAction *run)
 :G4UserTrackingAction(),
- fEvent(fEventAction) 
+fEvent(event), fRun(run)
 {
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -68,8 +68,15 @@ G4double globalTime = track->GetGlobalTime();
 
 if(track->GetStep()->GetPostStepPoint()->GetStepStatus() == fWorldBoundary){
     // 只考虑跑出世界体的gamma
-  if(track->GetDefinition()->GetParticleName() == "gamma"){
+    // 只考虑1s~1day的数据
+  if((track->GetDefinition()->GetParticleName() == "gamma") && (globalTime > 1*s)&& (globalTime < 1*day)){
       analysisManager->FillH2(0,globalTime,fEnergyTrack);
+      
+      std::fstream coinFileGamma; // 输出在晶体内沉积能量的大小和时间
+      coinFileGamma.open("CoinOutGamma_"+fRun->CrystalName+".csv",std::ios::app); // ios::app 在文件尾追加输入
+      coinFileGamma <<std::setprecision(15) << globalTime/s<< "," << fEnergyTrack/keV<<"\n"; // 时间以s为单位
+      coinFileGamma.close();
+
   }
 }
 

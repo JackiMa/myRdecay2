@@ -51,8 +51,8 @@ class RunAction : public G4UserRunAction
     virtual void   EndOfRunAction(const G4Run*);
 
   // static std::map<G4String, G4int> nuclideTable;
-  private:
   G4String CrystalName; // 晶体名字
+  private:
   Run*  fRun;
 };
 
