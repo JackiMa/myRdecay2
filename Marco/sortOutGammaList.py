@@ -18,4 +18,4 @@ with open(fileName,'r') as f:
 datacsv.sort(key = lambda x:float(x[0]),reverse=0)
 with open(fileName,'w') as f:
     for line in datacsv:
-        f.write("%s,%s\n" %(line[0],line[1]))
+        f.write("%s,%s,%s\n" %(line[0],line[1],line[2]))

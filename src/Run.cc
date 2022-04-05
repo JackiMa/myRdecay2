@@ -10,7 +10,7 @@
 #include <fstream>
 #define OUTPATH "./output/"
 
-#define MinResolTime (0.01*us) // 最小可分辨时间
+#define MinResolTime (100*ns) // 最小可分辨时间
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

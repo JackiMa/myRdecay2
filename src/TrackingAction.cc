@@ -72,9 +72,17 @@ if(track->GetStep()->GetPostStepPoint()->GetStepStatus() == fWorldBoundary){
   if((track->GetDefinition()->GetParticleName() == "gamma") && (globalTime > 1*s)&& (globalTime < 1*day)){
       analysisManager->FillH2(0,globalTime,fEnergyTrack);
       
+      const G4VProcess *createdProcess = track->GetCreatorProcess();
+      G4String createProcessName; // 产生这次事件的物理过程
+      if(createdProcess == nullptr){
+        createProcessName = "particle gun";
+      }
+      else{
+        createProcessName = createdProcess->GetProcessName();
+      }
       std::fstream coinFileGamma; // 输出在晶体内沉积能量的大小和时间
       coinFileGamma.open("CoinOutGamma_"+fRun->CrystalName+".csv",std::ios::app); // ios::app 在文件尾追加输入
-      coinFileGamma <<std::setprecision(15) << globalTime/s<< "," << fEnergyTrack/keV<<"\n"; // 时间以s为单位
+      coinFileGamma <<std::setprecision(15) << globalTime/s<< "," << fEnergyTrack/keV <<","<< createProcessName<<"\n"; // 时间以s为单位
       coinFileGamma.close();
 
   }

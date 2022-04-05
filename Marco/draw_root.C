@@ -32,12 +32,13 @@ void draw_root(std::string crystalName){
     Time_Energy->Rebin2D(10,10,"100")->Draw("COLZ"); // 10合一
     c1->SaveAs((crystalName+"_Rebin_Full.pdf").c_str());
     
+    delete c1;
 }
 
-
+// root -l draw_root.C 
 // void draw_root(){
 //     std::string path = "../build/";
-//     std::string crystalName = "Ti75";
+//     std::string crystalName = "GAGG";
 //     TFile* f1 = new TFile((path+crystalName+".root").c_str(),"Read");
 //     TCanvas* c1 = new TCanvas("Time_Engery", "Time_Engery",797,215,1098,500);
 //     auto Time_Energy =static_cast<TH2D *> (f1->Get("Time_Energy"));
