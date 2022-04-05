@@ -10,6 +10,8 @@
 #include <fstream>
 #define OUTPATH "./output/"
 
+#define MinResolTime (0.01*us) // 最小可分辨时间
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 Run::Run()
@@ -24,7 +26,7 @@ Run::~Run()
 
 void Run::CoinIonCount(G4double globalTime, G4double depInCrystal){
 
-globalTime = (G4long) globalTime / (0.1*us); // 设可以分辨的最小时间为0.1us，那么按此来合并.
+globalTime = (G4long) globalTime / MinResolTime; // 设可以分辨的最小时间，那么按此来合并.
                                              // 通过数制转换来强行实现数据的合并
 
   // 合并同一时间沉积的能量
@@ -195,7 +197,7 @@ void Run::EndOfRun()
     G4double globalTime     = it2->first;
     G4double edepInCrystal = it2->second;
 
-  coinFileIon << std::setprecision(15) << globalTime *us / s << "," << edepInCrystal/keV; // 将单位换算到s和keV
+  coinFileIon << std::setprecision(15) << globalTime * MinResolTime / s << "," << edepInCrystal/keV; // 收集数据时用到了MinResolTime，这里将单位换算到s和keV
   coinFileIon << "\n";
     
  }

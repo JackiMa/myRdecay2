@@ -39,7 +39,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 
-#define CRYSTALNAME "BGO"
+#define CRYSTALNAME "GAGG"
 
 // CrystalName can be: GAGG LYSO CsI BGO Stainless304 Ti75
 
